@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width:700px; margin:auto;">
+
+    <h1>My Profile</h1>
+
+    <p class="muted" style="margin:10px 0 30px;">
+        Update your career information so CareerLens AI can
+        generate better job matches.
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            value="{{ request.user.username }}"
+            disabled
+        >
+
+        <label>Email</label>
+
+        <input
+            type="email"
+            value="{{ request.user.email }}"
+            disabled
+        >
+
+        <label>Education</label>
+
+        <select name="education">
+
+            <option value="">Select Education</option>
+
+            <option value="B.Tech"
+                {% if profile.education == "B.Tech" %}selected{% endif %}>
+                B.Tech
+            </option>
+
+            <option value="BCA"
+                {% if profile.education == "BCA" %}selected{% endif %}>
+                BCA
+            </option>
+
+            <option value="MCA"
+                {% if profile.education == "MCA" %}selected{% endif %}>
+                MCA
+            </option>
+
+            <option value="M.Tech"
+                {% if profile.education == "M.Tech" %}selected{% endif %}>
+                M.Tech
+            </option>
+
+            <option value="B.Sc"
+                {% if profile.education == "B.Sc" %}selected{% endif %}>
+                B.Sc
+            </option>
+
+            <option value="M.Sc"
+                {% if profile.education == "M.Sc" %}selected{% endif %}>
+                M.Sc
+            </option>
+
+            <option value="BBA"
+                {% if profile.education == "BBA" %}selected{% endif %}>
+                BBA
+            </option>
+
+            <option value="MBA"
+                {% if profile.education == "MBA" %}selected{% endif %}>
+                MBA
+            </option>
+
+            <option value="B.Des"
+                {% if profile.education == "B.Des" %}selected{% endif %}>
+                B.Des
+            </option>
+
+            <option value="BA"
+                {% if profile.education == "BA" %}selected{% endif %}>
+                BA
+            </option>
+
+            <option value="Other"
+                {% if profile.education == "Other" %}selected{% endif %}>
+                Other
+            </option>
+
+        </select>
+
+        <label>Experience (Years)</label>
+
+        <input
+            type="number"
+            name="experience_years"
+            min="0"
+            value="{{ profile.experience_years }}"
+            required
+        >
+
+        <label>Location</label>
+
+        <input
+            type="text"
+            name="location"
+            value="{{ profile.location }}"
+            placeholder="e.g. Bhopal, Madhya Pradesh"
+        >
+
+        <label>Preferred Job Type</label>
+
+        <select name="preferred_job_type">
+
+            <option value="Full Time"
+                {% if profile.preferred_job_type == "Full Time" %}selected{% endif %}>
+                Full Time
+            </option>
+
+            <option value="Internship"
+                {% if profile.preferred_job_type == "Internship" %}selected{% endif %}>
+                Internship
+            </option>
+
+            <option value="Contract"
+                {% if profile.preferred_job_type == "Contract" %}selected{% endif %}>
+                Contract
+            </option>
+
+        </select>
+
+        <label>Skills</label>
+
+        <textarea
+            name="skills"
+            rows="4"
+            placeholder="Example: Python, Django, SQL, Machine Learning"
+        >{% for skill in profile.skills.all %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</textarea>
+
+        <button
+            type="submit"
+            class="btn">
+            Save Profile
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

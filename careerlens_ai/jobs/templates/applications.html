@@ -1,0 +1,380 @@
+{% extends "base.html" %}
+
+{% block title %}My Applications - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .applications-page {
+        max-width: 1150px;
+        margin: 20px auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .page-header {
+        margin-bottom: 28px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    .page-header p {
+        margin-top: 8px;
+        color: #9da9c4;
+        font-size: 14px;
+    }
+
+    /* =========================
+       APPLICATION CARD
+    ========================= */
+
+    .application-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 25px;
+
+        padding: 23px 25px;
+        margin-bottom: 15px;
+
+        border-radius: 18px;
+
+        background: rgba(255,255,255,0.045);
+        border: 1px solid rgba(255,255,255,0.08);
+
+        backdrop-filter: blur(15px);
+
+        transition: 0.25s ease;
+    }
+
+    .application-card:hover {
+        transform: translateY(-2px);
+
+        background: rgba(255,255,255,0.065);
+
+        border-color: rgba(130,150,255,0.20);
+
+        box-shadow:
+            0 15px 35px rgba(0,0,0,0.20);
+    }
+
+    /* =========================
+       JOB INFORMATION
+    ========================= */
+
+    .job-info {
+        flex: 1;
+    }
+
+    .job-title {
+        margin: 0 0 7px;
+
+        font-size: 18px;
+        font-weight: 700;
+
+        color: #ffffff;
+    }
+
+    .company {
+        margin: 0;
+
+        color: #aab5cf;
+        font-size: 14px;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        margin-top: 13px;
+    }
+
+    .meta-item {
+        padding: 6px 10px;
+
+        border-radius: 8px;
+
+        background: rgba(100,120,255,0.08);
+        border: 1px solid rgba(120,140,255,0.13);
+
+        color: #aeb9d8;
+
+        font-size: 12px;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .application-side {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+
+        min-width: 150px;
+    }
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 8px 14px;
+
+        border-radius: 999px;
+
+        background: rgba(100,130,255,0.12);
+        border: 1px solid rgba(120,145,255,0.18);
+
+        color: #dce4ff;
+
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .applied-date {
+        color: #8995b0;
+        font-size: 12px;
+    }
+
+    /* =========================
+       VIEW BUTTON
+    ========================= */
+
+    .view-job {
+        display: inline-block;
+
+        padding: 8px 13px;
+
+        border-radius: 9px;
+
+        text-decoration: none;
+
+        color: #c7d1ff;
+
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+
+        font-size: 12px;
+
+        transition: 0.2s ease;
+    }
+
+    .view-job:hover {
+        background: rgba(255,255,255,0.09);
+        color: #ffffff;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty-state {
+        padding: 55px 25px;
+
+        text-align: center;
+
+        border-radius: 22px;
+
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .empty-state h2 {
+        margin-bottom: 10px;
+
+        color: #ffffff;
+        font-size: 21px;
+    }
+
+    .empty-state p {
+        color: #9da9c4;
+        margin-bottom: 22px;
+    }
+
+    .browse-btn {
+        display: inline-block;
+
+        padding: 11px 20px;
+
+        border-radius: 11px;
+
+        text-decoration: none;
+
+        background: linear-gradient(
+            135deg,
+            #637cff,
+            #9b5cff
+        );
+
+        color: #ffffff;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        transition: 0.25s ease;
+    }
+
+    .browse-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px rgba(100,100,255,0.25);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+        .applications-page {
+            margin: 10px;
+        }
+
+        .page-header h1 {
+            font-size: 27px;
+        }
+
+        .application-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .application-side {
+            width: 100%;
+
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    }
+
+</style>
+
+
+<div class="applications-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h1>
+            My Applications
+        </h1>
+
+        <p>
+            Track the jobs you've applied for and monitor your application status.
+        </p>
+
+    </div>
+
+
+    <!-- APPLICATIONS -->
+
+    {% for application in applications %}
+
+        <div class="application-card">
+
+
+            <!-- JOB INFORMATION -->
+
+            <div class="job-info">
+
+                <h3 class="job-title">
+                    {{ application.job.title }}
+                </h3>
+
+                <p class="company">
+                    {{ application.job.company }}
+                </p>
+
+
+                <div class="job-meta">
+
+                    <span class="meta-item">
+                        {{ application.job.category }}
+                    </span>
+
+                    <span class="meta-item">
+                        {{ application.job.job_type }}
+                    </span>
+
+                    <span class="meta-item">
+                        {{ application.job.location }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STATUS + DATE -->
+
+            <div class="application-side">
+
+                <span class="status">
+                    {{ application.status }}
+                </span>
+
+                <span class="applied-date">
+
+                    Applied:
+                    {{ application.applied_at|date:"d M Y" }}
+
+                </span>
+
+                <a href="{% url 'job_detail' application.job.id %}"
+                   class="view-job">
+
+                    View Job
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    {% empty %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty-state">
+
+            <h2>
+                No Applications Yet
+            </h2>
+
+            <p>
+                You haven't applied for any jobs yet.
+                Explore available opportunities and start building your career.
+            </p>
+
+            <a href="{% url 'job_list' %}"
+               class="browse-btn">
+
+                Browse Jobs
+
+            </a>
+
+        </div>
+
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

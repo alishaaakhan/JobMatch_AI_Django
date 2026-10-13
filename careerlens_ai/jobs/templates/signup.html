@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+.signup-page {
+    min-height: calc(100vh - 100px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+}
+
+
+.signup-card {
+    width: 100%;
+    max-width: 500px;
+
+    padding: 40px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    backdrop-filter: blur(25px);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.30);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.signup-header {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+
+.signup-logo {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background:
+        rgba(124,140,255,.12);
+
+    border:
+        1px solid rgba(124,140,255,.20);
+
+    color: #8290ff;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    box-shadow:
+        0 0 30px rgba(124,140,255,.10);
+}
+
+
+.signup-header h2 {
+    font-size: 30px;
+
+    margin-bottom: 8px;
+}
+
+
+.signup-header p {
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.signup-form {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.signup-form label {
+    margin-bottom: 8px;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.signup-form input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin-bottom: 19px;
+
+    padding: 13px 15px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    background:
+        rgba(15,23,42,.55);
+
+    color: #f8fafc;
+
+    outline: none;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+}
+
+
+.signup-form input:focus {
+    border-color:
+        rgba(124,140,255,.55);
+
+    background:
+        rgba(15,23,42,.75);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(124,140,255,.08);
+}
+
+
+.signup-form input::placeholder {
+    color: #64748b;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.signup-button {
+    width: 100%;
+
+    margin-top: 5px;
+
+    padding: 14px;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   LOGIN LINK
+========================= */
+
+.signup-footer {
+    text-align: center;
+
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+.signup-footer a {
+    color: #8290ff;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+
+.signup-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   ERROR / MESSAGE
+========================= */
+
+.signup-error {
+    margin-bottom: 20px;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(239,68,68,.08);
+
+    border:
+        1px solid rgba(239,68,68,.18);
+
+    color: #fca5a5;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+    .signup-card {
+        padding: 30px 22px;
+    }
+
+    .signup-header h2 {
+        font-size: 26px;
+    }
+
+}
+
+</style>
+
+
+<div class="signup-page">
+
+    <div class="signup-card">
+
+
+        <!-- HEADER -->
+
+        <div class="signup-header">
+
+            <div class="signup-logo">
+                AI
+            </div>
+
+            <h2>
+                Create Your Account
+            </h2>
+
+            <p>
+                Start discovering better career opportunities.
+            </p>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+            class="signup-form"
+        >
+
+            {% csrf_token %}
+
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="signup-error">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                autocomplete="username"
+                required
+            >
+
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email address"
+                autocomplete="email"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+                required
+            >
+
+
+            <label for="confirm_password">
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Confirm your password"
+                autocomplete="new-password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="btn signup-button"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <!-- LOGIN LINK -->
+
+        <div class="signup-footer">
+
+            Already have an account?
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

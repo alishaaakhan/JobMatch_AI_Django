@@ -1,0 +1,717 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .job-detail-page {
+        max-width: 1150px;
+        margin: 20px auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .job-header {
+        padding: 32px;
+        margin-bottom: 22px;
+        border-radius: 24px;
+
+        background: rgba(255,255,255,0.055);
+        border: 1px solid rgba(255,255,255,0.09);
+        backdrop-filter: blur(18px);
+
+        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+
+    .job-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 25px;
+    }
+
+    .job-title {
+        font-size: 34px;
+        font-weight: 800;
+        margin: 0 0 12px;
+        color: #ffffff;
+    }
+
+    .company-name {
+        font-size: 17px;
+        color: #b9c4dc;
+        margin-bottom: 20px;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 13px;
+
+        border-radius: 999px;
+
+        background: rgba(100,130,255,0.12);
+        border: 1px solid rgba(120,150,255,0.18);
+
+        color: #dce4ff;
+        font-size: 13px;
+    }
+
+    /* =========================
+       AI MATCH
+    ========================= */
+
+    .match-card {
+        min-width: 190px;
+        padding: 20px;
+        text-align: center;
+
+        border-radius: 20px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(90,110,255,0.18),
+                rgba(180,70,255,0.10)
+            );
+
+        border: 1px solid rgba(130,140,255,0.20);
+    }
+
+    .match-label {
+        font-size: 12px;
+        color: #aeb9d4;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .match-score {
+        font-size: 38px;
+        font-weight: 800;
+        margin-top: 5px;
+
+        background: linear-gradient(
+            90deg,
+            #8fa8ff,
+            #d28cff
+        );
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .match-text {
+        font-size: 12px;
+        color: #aeb9d4;
+    }
+
+    /* =========================
+       MAIN GRID
+    ========================= */
+
+    .job-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 22px;
+    }
+
+    .detail-card {
+        padding: 28px;
+
+        border-radius: 22px;
+
+        background: rgba(255,255,255,0.045);
+        border: 1px solid rgba(255,255,255,0.08);
+
+        backdrop-filter: blur(16px);
+    }
+
+    .detail-card h2 {
+        margin: 0 0 18px;
+        font-size: 20px;
+        color: #ffffff;
+    }
+
+    .description {
+        color: #b9c4dc;
+        line-height: 1.8;
+        white-space: pre-line;
+    }
+
+    /* =========================
+       SKILLS
+    ========================= */
+
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .skill-tag {
+        padding: 9px 14px;
+        border-radius: 10px;
+
+        background: rgba(100,130,255,0.10);
+        border: 1px solid rgba(110,140,255,0.18);
+
+        color: #dce4ff;
+        font-size: 13px;
+    }
+
+    /* =========================
+       JOB INFORMATION
+    ========================= */
+
+    .info-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+
+        padding-bottom: 14px;
+
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .info-label {
+        color: #8f9bb7;
+        font-size: 13px;
+    }
+
+    .info-value {
+        color: #e9edff;
+        font-size: 14px;
+        text-align: right;
+    }
+
+    /* =========================
+       ACTION BUTTONS
+    ========================= */
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .action-btn {
+        width: 100%;
+        padding: 13px 18px;
+
+        border-radius: 12px;
+
+        text-align: center;
+        text-decoration: none;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        transition: 0.25s ease;
+    }
+
+    .primary-btn {
+        background: linear-gradient(
+            135deg,
+            #637cff,
+            #9b5cff
+        );
+
+        color: white;
+
+        box-shadow:
+            0 10px 25px rgba(100,100,255,0.20);
+    }
+
+    .primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow:
+            0 14px 30px rgba(100,100,255,0.30);
+    }
+
+    .secondary-btn {
+        background: rgba(255,255,255,0.055);
+        border: 1px solid rgba(255,255,255,0.10);
+        color: #dce4ff;
+    }
+
+    .secondary-btn:hover {
+        background: rgba(255,255,255,0.09);
+    }
+
+    .disabled-btn {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+
+    /* =========================
+       BACK BUTTON
+    ========================= */
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 18px;
+
+        color: #9eafff;
+        text-decoration: none;
+
+        font-size: 14px;
+    }
+
+    .back-link:hover {
+        color: #c4ceff;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 850px) {
+
+        .job-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .job-header-top {
+            flex-direction: column;
+        }
+
+        .match-card {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .job-detail-page {
+            margin: 10px;
+        }
+
+        .job-header,
+        .detail-card {
+            padding: 20px;
+        }
+
+        .job-title {
+            font-size: 27px;
+        }
+
+        .info-item {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-value {
+            text-align: left;
+        }
+
+    }
+
+</style>
+
+
+<div class="job-detail-page">
+
+    <!-- BACK -->
+    <a href="{% url 'job_list' %}" class="back-link">
+        ← Back to Jobs
+    </a>
+
+
+    <!-- JOB HEADER -->
+    <div class="job-header">
+
+        <div class="job-header-top">
+
+            <div>
+
+                <h1 class="job-title">
+                    {{ job.title }}
+                </h1>
+
+                <div class="company-name">
+                    {{ job.company }} · {{ job.location }}
+                </div>
+
+                <div class="job-meta">
+
+                    <span class="tag">
+                        {{ job.category }}
+                    </span>
+
+                    <span class="tag">
+                        {{ job.job_type }}
+                    </span>
+
+                    <span class="tag">
+                        {{ job.experience_years }} years experience
+                    </span>
+
+                    {% if job.state %}
+                    <span class="tag">
+                        {{ job.state }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- AI MATCH SCORE -->
+            {% if match_score %}
+
+            <div class="match-card">
+
+                <div class="match-label">
+                    AI Match
+                </div>
+
+                <div class="match-score">
+                    {{ match_score }}%
+                </div>
+
+                <div class="match-text">
+                    Profile compatibility
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="job-grid">
+
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+
+            <!-- DESCRIPTION -->
+            <div class="detail-card">
+
+                <h2>
+                    Job Description
+                </h2>
+
+                <div class="description">
+                    {{ job.description }}
+                </div>
+
+            </div>
+
+
+            <!-- REQUIRED SKILLS -->
+            <div class="detail-card" style="margin-top:22px;">
+
+                <h2>
+                    Required Skills
+                </h2>
+
+                <div class="skills-container">
+
+                    {% for skill in job.skills.all %}
+
+                        <span class="skill-tag">
+                            {{ skill.name }}
+                        </span>
+
+                    {% empty %}
+
+                        <span class="description">
+                            No specific skills listed.
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <!-- AI SKILL ANALYSIS -->
+            {% if matched_skills or missing_skills %}
+
+            <div class="detail-card" style="margin-top:22px;">
+
+                <h2>
+                    AI Skill Analysis
+                </h2>
+
+                {% if matched_skills %}
+
+                    <p style="
+                        color:#9fd6b0;
+                        margin-bottom:10px;
+                        font-size:14px;
+                    ">
+                        Matched Skills
+                    </p>
+
+                    <div class="skills-container">
+
+                        {% for skill in matched_skills %}
+
+                            <span class="skill-tag">
+                                {{ skill }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if missing_skills %}
+
+                    <p style="
+                        color:#e7b0b0;
+                        margin:20px 0 10px;
+                        font-size:14px;
+                    ">
+                        Skills You May Need
+                    </p>
+
+                    <div class="skills-container">
+
+                        {% for skill in missing_skills %}
+
+                            <span class="skill-tag">
+                                {{ skill }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div>
+
+
+            <!-- JOB INFORMATION -->
+            <div class="detail-card">
+
+                <h2>
+                    Job Information
+                </h2>
+
+                <div class="info-list">
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Company
+                        </span>
+
+                        <span class="info-value">
+                            {{ job.company }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Location
+                        </span>
+
+                        <span class="info-value">
+                            {{ job.location }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Category
+                        </span>
+
+                        <span class="info-value">
+                            {{ job.category }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Job Type
+                        </span>
+
+                        <span class="info-value">
+                            {{ job.job_type }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Experience
+                        </span>
+
+                        <span class="info-value">
+                            {{ job.experience_years }} years
+                        </span>
+
+                    </div>
+
+
+                    {% if job.salary_inr %}
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Salary
+                        </span>
+
+                        <span class="info-value">
+                            ₹{{ job.salary_inr }}
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="actions">
+
+                    {% if not applied %}
+
+                        <a href="{% url 'apply_job' job.id %}"
+                           class="action-btn primary-btn">
+                            Apply for this Job
+                        </a>
+
+                    {% else %}
+
+                        <span class="action-btn secondary-btn disabled-btn">
+                            ✓ Already Applied
+                        </span>
+
+                    {% endif %}
+
+
+                    <a href="{% url 'save_job' job.id %}"
+                       class="action-btn secondary-btn">
+
+                        {% if saved %}
+                            Remove from Saved
+                        {% else %}
+                            Save Job
+                        {% endif %}
+
+                    </a>
+
+
+                    {% if job.application_url %}
+
+                        <a href="{{ job.application_url }}"
+                           target="_blank"
+                           class="action-btn secondary-btn">
+                            Visit Company Website
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- AI TIP -->
+            <div class="detail-card" style="margin-top:22px;">
+
+                <h2>
+                    AI Career Insight
+                </h2>
+
+                {% if match_score %}
+
+                    <p class="description">
+
+                        This job has been analyzed against your
+                        profile using the CareerLens AI matching
+                        system.
+
+                        {% if match_score >= 80 %}
+                            Your profile shows a strong compatibility
+                            with this role.
+                        {% elif match_score >= 60 %}
+                            You have a reasonable match, but improving
+                            some missing skills could increase your
+                            compatibility.
+                        {% else %}
+                            Consider developing the missing skills
+                            before applying.
+                        {% endif %}
+
+                    </p>
+
+                {% else %}
+
+                    <p class="description">
+
+                        Complete your profile with your education,
+                        experience, location and skills to get an
+                        AI-powered compatibility score for this job.
+
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,617 @@
+{% extends "base.html" %}
+
+{% block title %}AI Matches - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .matches-page {
+        max-width: 1250px;
+        margin: 20px auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .matches-header {
+        margin-bottom: 30px;
+    }
+
+    .matches-header h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    .matches-header p {
+        margin-top: 9px;
+        max-width: 700px;
+
+        color: #9da9c4;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    /* =========================
+       MATCH GRID
+    ========================= */
+
+    .matches-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+    }
+
+    /* =========================
+       MATCH CARD
+    ========================= */
+
+    .match-card {
+        position: relative;
+
+        padding: 25px;
+
+        border-radius: 22px;
+
+        background: rgba(255,255,255,0.045);
+        border: 1px solid rgba(255,255,255,0.08);
+
+        backdrop-filter: blur(16px);
+
+        transition: 0.25s ease;
+
+        overflow: hidden;
+    }
+
+    .match-card::before {
+        content: "";
+
+        position: absolute;
+
+        top: -80px;
+        right: -80px;
+
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        background: rgba(105,120,255,0.08);
+
+        filter: blur(20px);
+    }
+
+    .match-card:hover {
+        transform: translateY(-4px);
+
+        background: rgba(255,255,255,0.065);
+
+        border-color: rgba(130,150,255,0.20);
+
+        box-shadow:
+            0 20px 45px rgba(0,0,0,0.22);
+    }
+
+    /* =========================
+       CARD HEADER
+    ========================= */
+
+    .match-header {
+        position: relative;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+    .job-title {
+        margin: 0 0 7px;
+
+        font-size: 19px;
+        font-weight: 700;
+
+        color: #ffffff;
+    }
+
+    .company-name {
+        margin: 0;
+
+        color: #9faac3;
+        font-size: 14px;
+    }
+
+    /* =========================
+       SCORE
+    ========================= */
+
+    .score-box {
+        min-width: 82px;
+
+        padding: 11px 12px;
+
+        text-align: center;
+
+        border-radius: 15px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(95,120,255,0.16),
+                rgba(170,85,255,0.12)
+            );
+
+        border: 1px solid rgba(130,145,255,0.20);
+    }
+
+    .score {
+        font-size: 25px;
+        font-weight: 800;
+
+        background:
+            linear-gradient(
+                90deg,
+                #91a7ff,
+                #d18aff
+            );
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .score-label {
+        margin-top: 2px;
+
+        color: #8f9bb7;
+
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    /* =========================
+       JOB META
+    ========================= */
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+        margin-top: 20px;
+    }
+
+    .meta-tag {
+        padding: 7px 11px;
+
+        border-radius: 9px;
+
+        background: rgba(100,120,255,0.08);
+
+        border: 1px solid rgba(120,140,255,0.13);
+
+        color: #b7c2df;
+
+        font-size: 12px;
+    }
+
+    /* =========================
+       SKILLS
+    ========================= */
+
+    .skills-section {
+        margin-top: 23px;
+    }
+
+    .section-title {
+        margin-bottom: 10px;
+
+        color: #e7ebff;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+
+    .skill {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 7px 10px;
+
+        border-radius: 8px;
+
+        font-size: 12px;
+    }
+
+    .matched-skill {
+        color: #bde7ca;
+
+        background: rgba(75,180,110,0.08);
+
+        border: 1px solid rgba(90,190,120,0.15);
+    }
+
+    .missing-skill {
+        color: #d7c4ff;
+
+        background: rgba(145,90,220,0.08);
+
+        border: 1px solid rgba(155,100,235,0.15);
+    }
+
+    .no-skills {
+        color: #8e99b2;
+
+        font-size: 12px;
+    }
+
+    /* =========================
+       ACTION
+    ========================= */
+
+    .match-action {
+        margin-top: 25px;
+
+        padding-top: 18px;
+
+        border-top:
+            1px solid rgba(255,255,255,0.07);
+    }
+
+    .view-btn {
+        display: inline-block;
+
+        padding: 10px 17px;
+
+        border-radius: 10px;
+
+        text-decoration: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #637cff,
+                #9b5cff
+            );
+
+        color: #ffffff;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        transition: 0.25s ease;
+    }
+
+    .view-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px rgba(100,100,255,0.25);
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty-state {
+        padding: 60px 30px;
+
+        text-align: center;
+
+        border-radius: 22px;
+
+        background: rgba(255,255,255,0.04);
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+    }
+
+    .empty-state h2 {
+        margin: 0 0 10px;
+
+        color: #ffffff;
+
+        font-size: 21px;
+    }
+
+    .empty-state p {
+        max-width: 550px;
+
+        margin: 0 auto 24px;
+
+        color: #9da9c4;
+
+        line-height: 1.7;
+
+        font-size: 14px;
+    }
+
+    .profile-btn {
+        display: inline-block;
+
+        padding: 11px 20px;
+
+        border-radius: 11px;
+
+        text-decoration: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #637cff,
+                #9b5cff
+            );
+
+        color: #ffffff;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+        .matches-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .matches-page {
+            margin: 10px;
+        }
+
+        .matches-header h1 {
+            font-size: 27px;
+        }
+
+        .match-card {
+            padding: 20px;
+        }
+
+        .match-header {
+            flex-direction: column;
+        }
+
+        .score-box {
+            min-width: 100px;
+        }
+
+    }
+
+</style>
+
+
+<div class="matches-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="matches-header">
+
+        <h1>
+            Your AI Job Matches
+        </h1>
+
+        <p>
+            CareerLens AI analyzes your skills, education,
+            experience and location to find jobs that best
+            match your profile.
+        </p>
+
+    </div>
+
+
+    <!-- MATCHES -->
+
+    {% if recommendations %}
+
+        <div class="matches-grid">
+
+            {% for item in recommendations %}
+
+                <div class="match-card">
+
+
+                    <!-- HEADER -->
+
+                    <div class="match-header">
+
+                        <div>
+
+                            <h3 class="job-title">
+                                {{ item.job.title }}
+                            </h3>
+
+                            <p class="company-name">
+                                {{ item.job.company }}
+                            </p>
+
+                        </div>
+
+
+                        <!-- AI SCORE -->
+
+                        <div class="score-box">
+
+                            <div class="score">
+                                {{ item.score }}%
+                            </div>
+
+                            <div class="score-label">
+                                AI Match
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- JOB META -->
+
+                    <div class="job-meta">
+
+                        {% if item.job.location %}
+
+                            <span class="meta-tag">
+                                {{ item.job.location }}
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if item.job.job_type %}
+
+                            <span class="meta-tag">
+                                {{ item.job.job_type }}
+                            </span>
+
+                        {% endif %}
+
+
+                        {% if item.job.category %}
+
+                            <span class="meta-tag">
+                                {{ item.job.category }}
+                            </span>
+
+                        {% endif %}
+
+
+                        <span class="meta-tag">
+                            {{ item.job.experience_years }} yrs
+                        </span>
+
+                    </div>
+
+
+                    <!-- MATCHED SKILLS -->
+
+                    <div class="skills-section">
+
+                        <div class="section-title">
+                            Matched Skills
+                        </div>
+
+                        <div class="skills">
+
+                            {% for skill in item.matched %}
+
+                                <span class="skill matched-skill">
+                                    ✓ {{ skill }}
+                                </span>
+
+                            {% empty %}
+
+                                <span class="no-skills">
+                                    No matched skills found.
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MISSING SKILLS -->
+
+                    <div class="skills-section">
+
+                        <div class="section-title">
+                            Skills to Improve
+                        </div>
+
+                        <div class="skills">
+
+                            {% for skill in item.missing %}
+
+                                <span class="skill missing-skill">
+                                    {{ skill }}
+                                </span>
+
+                            {% empty %}
+
+                                <span class="no-skills">
+                                    You have all required skills.
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTION -->
+
+                    <div class="match-action">
+
+                        <a
+                            href="{% url 'job_detail' item.job.id %}"
+                            class="view-btn"
+                        >
+                            View Job Details →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty-state">
+
+            <h2>
+                No AI Matches Yet
+            </h2>
+
+            <p>
+                Complete your CareerLens AI profile with your
+                education, experience, location and skills.
+                Once your profile is ready, the AI matching
+                system can recommend relevant jobs for you.
+            </p>
+
+            <a
+                href="{% url 'profile' %}"
+                class="profile-btn"
+            >
+                Complete My Profile
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

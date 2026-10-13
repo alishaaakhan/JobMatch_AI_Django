@@ -1,0 +1,481 @@
+{% extends "base.html" %}
+
+{% block title %}Saved Jobs - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .saved-page {
+        max-width: 1200px;
+        margin: 20px auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .saved-header {
+        margin-bottom: 28px;
+    }
+
+    .saved-header h1 {
+        margin: 0;
+
+        font-size: 32px;
+        font-weight: 800;
+
+        color: #ffffff;
+    }
+
+    .saved-header p {
+        margin-top: 8px;
+
+        color: #9da9c4;
+
+        font-size: 14px;
+    }
+
+    /* =========================
+       GRID
+    ========================= */
+
+    .saved-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 20px;
+    }
+
+    /* =========================
+       JOB CARD
+    ========================= */
+
+    .saved-card {
+        padding: 23px;
+
+        border-radius: 20px;
+
+        background: rgba(255,255,255,0.045);
+
+        border: 1px solid rgba(255,255,255,0.08);
+
+        backdrop-filter: blur(16px);
+
+        transition: 0.25s ease;
+    }
+
+    .saved-card:hover {
+        transform: translateY(-4px);
+
+        background: rgba(255,255,255,0.065);
+
+        border-color:
+            rgba(130,150,255,0.20);
+
+        box-shadow:
+            0 18px 40px rgba(0,0,0,0.20);
+    }
+
+    /* =========================
+       JOB TITLE
+    ========================= */
+
+    .job-title {
+        margin: 0 0 7px;
+
+        color: #ffffff;
+
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .company {
+        margin: 0;
+
+        color: #a4aec7;
+
+        font-size: 14px;
+    }
+
+    /* =========================
+       META
+    ========================= */
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+        margin-top: 18px;
+    }
+
+    .meta-tag {
+        padding: 7px 10px;
+
+        border-radius: 8px;
+
+        background:
+            rgba(100,120,255,0.08);
+
+        border:
+            1px solid rgba(120,140,255,0.13);
+
+        color: #b8c3df;
+
+        font-size: 11px;
+    }
+
+    /* =========================
+       SKILLS
+    ========================= */
+
+    .skills {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 6px;
+
+        margin-top: 16px;
+    }
+
+    .skill {
+        padding: 6px 9px;
+
+        border-radius: 7px;
+
+        background:
+            rgba(255,255,255,0.045);
+
+        border:
+            1px solid rgba(255,255,255,0.07);
+
+        color: #aeb9d3;
+
+        font-size: 11px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .card-footer {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 10px;
+
+        margin-top: 22px;
+
+        padding-top: 17px;
+
+        border-top:
+            1px solid rgba(255,255,255,0.07);
+    }
+
+    .saved-date {
+        color: #7f8aa4;
+
+        font-size: 11px;
+    }
+
+    .view-btn {
+        display: inline-block;
+
+        padding: 9px 14px;
+
+        border-radius: 9px;
+
+        text-decoration: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #637cff,
+                #9b5cff
+            );
+
+        color: #ffffff;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        transition: 0.25s ease;
+    }
+
+    .view-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 22px
+            rgba(100,100,255,0.25);
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty-state {
+        grid-column: 1 / -1;
+
+        padding: 60px 30px;
+
+        text-align: center;
+
+        border-radius: 22px;
+
+        background:
+            rgba(255,255,255,0.04);
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+    }
+
+    .empty-state h2 {
+        margin: 0 0 10px;
+
+        color: #ffffff;
+
+        font-size: 21px;
+    }
+
+    .empty-state p {
+        max-width: 550px;
+
+        margin: 0 auto 24px;
+
+        color: #9da9c4;
+
+        line-height: 1.7;
+
+        font-size: 14px;
+    }
+
+    .browse-btn {
+        display: inline-block;
+
+        padding: 11px 20px;
+
+        border-radius: 11px;
+
+        text-decoration: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #637cff,
+                #9b5cff
+            );
+
+        color: #ffffff;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        transition: 0.25s ease;
+    }
+
+    .browse-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px
+            rgba(100,100,255,0.25);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1000px) {
+
+        .saved-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+    }
+
+    @media (max-width: 650px) {
+
+        .saved-page {
+            margin: 10px;
+        }
+
+        .saved-header h1 {
+            font-size: 27px;
+        }
+
+        .saved-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .saved-card {
+            padding: 20px;
+        }
+
+    }
+
+</style>
+
+
+<div class="saved-page">
+
+
+    <!-- HEADER -->
+
+    <div class="saved-header">
+
+        <h1>
+            Saved Jobs
+        </h1>
+
+        <p>
+            Keep track of opportunities you're interested in
+            and come back to them when you're ready to apply.
+        </p>
+
+    </div>
+
+
+    <!-- SAVED JOBS -->
+
+    <div class="saved-grid">
+
+        {% for saved in saved_jobs %}
+
+            <div class="saved-card">
+
+
+                <!-- JOB -->
+
+                <h3 class="job-title">
+                    {{ saved.job.title }}
+                </h3>
+
+                <p class="company">
+                    {{ saved.job.company }}
+                </p>
+
+
+                <!-- META -->
+
+                <div class="job-meta">
+
+                    {% if saved.job.location %}
+
+                        <span class="meta-tag">
+                            {{ saved.job.location }}
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if saved.job.job_type %}
+
+                        <span class="meta-tag">
+                            {{ saved.job.job_type }}
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if saved.job.category %}
+
+                        <span class="meta-tag">
+                            {{ saved.job.category }}
+                        </span>
+
+                    {% endif %}
+
+
+                    <span class="meta-tag">
+                        {{ saved.job.experience_years }} yrs
+                    </span>
+
+                </div>
+
+
+                <!-- SKILLS -->
+
+                <div class="skills">
+
+                    {% for skill in saved.job.skills.all|slice:":5" %}
+
+                        <span class="skill">
+                            {{ skill.name }}
+                        </span>
+
+                    {% empty %}
+
+                        <span class="skill">
+                            No skills listed
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- FOOTER -->
+
+                <div class="card-footer">
+
+                    <span class="saved-date">
+
+                        Saved
+                        {{ saved.saved_at|date:"d M Y" }}
+
+                    </span>
+
+
+                    <a
+                        href="{% url 'job_detail' saved.job.id %}"
+                        class="view-btn"
+                    >
+                        View Job →
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+                <h2>
+                    No Saved Jobs Yet
+                </h2>
+
+                <p>
+                    When you find a job that interests you,
+                    save it here so you can easily come back
+                    and apply later.
+                </p>
+
+                <a
+                    href="{% url 'job_list' %}"
+                    class="browse-btn"
+                >
+                    Browse Jobs
+                </a>
+
+            </div>
+
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

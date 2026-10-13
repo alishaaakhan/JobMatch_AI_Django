@@ -1,0 +1,1467 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+CareerLens AI - AI-Powered Career Matching
+{% endblock %}
+
+
+{% block content %}
+
+
+<style>
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+.home-page {
+
+    width: 100%;
+
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 20px 0 60px;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    min-height: 590px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 0.9fr;
+
+    align-items: center;
+
+    gap: 60px;
+
+    padding: 55px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(102,117,245,.14),
+            rgba(255,255,255,.035)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.28);
+
+}
+
+
+/* Background glow */
+
+.hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 400px;
+
+    height: 400px;
+
+    top: -220px;
+
+    right: -120px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(102,117,245,.18);
+
+    filter:
+        blur(90px);
+
+}
+
+
+.hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+
+    height: 300px;
+
+    bottom: -180px;
+
+    left: -120px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(124,140,255,.12);
+
+    filter:
+        blur(80px);
+
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.hero-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        8px 14px;
+
+    margin-bottom: 22px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(124,140,255,.10);
+
+    border:
+        1px solid
+        rgba(124,140,255,.20);
+
+    color: #aab4ff;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.hero-badge-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #8290ff;
+
+    box-shadow:
+        0 0 12px
+        rgba(130,144,255,.9);
+
+}
+
+
+.hero h1 {
+
+    font-size:
+        clamp(44px, 5vw, 68px);
+
+    line-height: 1.04;
+
+    letter-spacing: -2.5px;
+
+    margin-bottom: 24px;
+
+}
+
+
+.gradient-text {
+
+    background:
+        linear-gradient(
+            90deg,
+            #8290ff,
+            #aeb8ff
+        );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+
+}
+
+
+.hero-description {
+
+    max-width: 600px;
+
+    color: #94a3b8;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    margin-bottom: 32px;
+
+}
+
+
+.hero-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.hero-actions .btn {
+
+    padding:
+        14px 23px;
+
+}
+
+
+/* =========================================================
+   AI VISUAL
+========================================================= */
+
+.hero-visual {
+
+    position: relative;
+
+    min-height: 400px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 2;
+
+}
+
+
+.ai-orb {
+
+    width: 235px;
+
+    height: 235px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(160,170,255,.35),
+            rgba(102,117,245,.12) 45%,
+            rgba(10,16,35,.55) 75%
+        );
+
+    border:
+        1px solid
+        rgba(160,170,255,.25);
+
+    box-shadow:
+        0 0 90px
+        rgba(102,117,245,.23),
+
+        inset 0 0 55px
+        rgba(124,140,255,.08);
+
+    animation:
+        floatOrb 5s ease-in-out infinite;
+
+}
+
+
+.ai-orb::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -18px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(124,140,255,.14);
+
+    animation:
+        rotateOrb 12s linear infinite;
+
+}
+
+
+.ai-orb::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -42px;
+
+    border-radius: 50%;
+
+    border:
+        1px dashed
+        rgba(124,140,255,.11);
+
+    animation:
+        rotateOrb 18s linear infinite reverse;
+
+}
+
+
+.orb-text {
+
+    text-align: center;
+
+    position: relative;
+
+    z-index: 3;
+
+}
+
+
+.orb-text strong {
+
+    display: block;
+
+    font-size: 38px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.orb-text span {
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+}
+
+
+@keyframes floatOrb {
+
+    0%,
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-15px);
+
+    }
+
+}
+
+
+@keyframes rotateOrb {
+
+    from {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   FLOATING CARDS
+========================================================= */
+
+.floating-card {
+
+    position: absolute;
+
+    padding:
+        14px 17px;
+
+    min-width: 165px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(15,23,42,.72);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(0,0,0,.30);
+
+    animation:
+        floatingCard 4s ease-in-out infinite;
+
+}
+
+
+.floating-card small {
+
+    display: block;
+
+    color: #64748b;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 6px;
+
+}
+
+
+.floating-card strong {
+
+    color: #edf0ff;
+
+    font-size: 13px;
+
+}
+
+
+.match-card {
+
+    top: 30px;
+
+    right: 0;
+
+}
+
+
+.skills-card {
+
+    bottom: 48px;
+
+    left: 0;
+
+    animation-delay: 1.2s;
+
+}
+
+
+.job-card-home {
+
+    bottom: 5px;
+
+    right: 10px;
+
+    animation-delay: .6s;
+
+}
+
+
+@keyframes floatingCard {
+
+    0%,
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-8px);
+
+    }
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.home-section {
+
+    margin-top: 75px;
+
+}
+
+
+.section-heading {
+
+    margin-bottom: 28px;
+
+}
+
+
+.section-heading h2 {
+
+    font-size: 30px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.section-heading p {
+
+    color: #94a3b8;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.feature-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+}
+
+
+.feature-card {
+
+    min-height: 225px;
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        background .3s ease;
+
+}
+
+
+.feature-card:hover {
+
+    transform:
+        translateY(-7px);
+
+    border-color:
+        rgba(124,140,255,.28);
+
+    background:
+        rgba(255,255,255,.075);
+
+}
+
+
+.feature-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(102,117,245,.12);
+
+    border:
+        1px solid
+        rgba(124,140,255,.15);
+
+    color: #8290ff;
+
+}
+
+
+.feature-icon svg {
+
+    width: 22px;
+
+    height: 22px;
+
+}
+
+
+.feature-card h3 {
+
+    font-size: 17px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.feature-card p {
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   HOW IT WORKS
+========================================================= */
+
+.steps-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+
+}
+
+
+.step-card {
+
+    position: relative;
+
+    padding: 30px;
+
+}
+
+
+.step-number {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(102,117,245,.14);
+
+    border:
+        1px solid
+        rgba(124,140,255,.16);
+
+    color: #8290ff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.step-card h3 {
+
+    margin-bottom: 10px;
+
+    font-size: 18px;
+
+}
+
+
+.step-card p {
+
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.home-cta {
+
+    margin-top: 75px;
+
+    padding:
+        60px 30px;
+
+    text-align: center;
+
+    border-radius: 26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(102,117,245,.15),
+            rgba(255,255,255,.035)
+        );
+
+    border:
+        1px solid
+        rgba(124,140,255,.15);
+
+    backdrop-filter:
+        blur(22px);
+
+}
+
+
+.home-cta h2 {
+
+    font-size: 34px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.home-cta p {
+
+    max-width: 620px;
+
+    margin:
+        0 auto 28px;
+
+    color: #94a3b8;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .feature-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .hero {
+
+        grid-template-columns:
+            1fr;
+
+        gap: 25px;
+
+        padding: 45px 35px;
+
+        text-align: center;
+
+    }
+
+
+    .hero-description {
+
+        margin-left: auto;
+
+        margin-right: auto;
+
+    }
+
+
+    .hero-actions {
+
+        justify-content: center;
+
+    }
+
+
+    .hero-visual {
+
+        min-height: 360px;
+
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .home-page {
+
+        padding:
+            5px 0 40px;
+
+    }
+
+
+    .hero {
+
+        padding:
+            35px 20px;
+
+        border-radius: 22px;
+
+    }
+
+
+    .hero h1 {
+
+        font-size: 42px;
+
+        letter-spacing: -1.5px;
+
+    }
+
+
+    .hero-description {
+
+        font-size: 14px;
+
+    }
+
+
+    .hero-visual {
+
+        transform:
+            scale(.82);
+
+        margin:
+            -25px 0;
+
+    }
+
+
+    .feature-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .steps-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .home-cta {
+
+        padding:
+            40px 20px;
+
+    }
+
+
+    .home-cta h2 {
+
+        font-size: 27px;
+
+    }
+
+}
+
+</style>
+
+
+<div class="home-page">
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+
+            <div class="hero-badge">
+
+                <span class="hero-badge-dot"></span>
+
+                AI-Powered Career Platform
+
+            </div>
+
+
+            <h1>
+
+                Find Jobs That
+
+                <br>
+
+                <span class="gradient-text">
+                    Fit You.
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                CareerLens AI analyzes your skills,
+                education, experience and career
+                preferences to discover job opportunities
+                that actually match your profile.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+
+                {% if user.is_authenticated %}
+
+
+                    <a
+                        href="{% url 'recommendations' %}"
+                        class="btn">
+
+                        Find My Matches
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'job_list' %}"
+                        class="btn btn-secondary">
+
+                        Explore Jobs
+
+                    </a>
+
+
+                {% else %}
+
+
+                    <a
+                        href="{% url 'signup' %}"
+                        class="btn">
+
+                        Get Started
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="btn btn-secondary">
+
+                        Login
+
+                    </a>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             AI VISUAL
+        ================================================= -->
+
+        <div class="hero-visual">
+
+
+            <div class="ai-orb">
+
+                <div class="orb-text">
+
+                    <strong>AI</strong>
+
+                    <span>
+                        Career Matching
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="floating-card match-card">
+
+                <small>
+                    MATCH SCORE
+                </small>
+
+                <strong>
+                    92% Match
+                </strong>
+
+            </div>
+
+
+            <div class="floating-card skills-card">
+
+                <small>
+                    SKILLS DETECTED
+                </small>
+
+                <strong>
+                    Python · SQL · ML
+                </strong>
+
+            </div>
+
+
+            <div class="floating-card job-card-home">
+
+                <small>
+                    RECOMMENDED
+                </small>
+
+                <strong>
+                    Data Analyst
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         FEATURES
+    ===================================================== -->
+
+    <section class="home-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                Everything You Need
+            </h2>
+
+            <p>
+                Discover, evaluate and track career
+                opportunities from one intelligent platform.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <!-- AI MATCHING -->
+
+            <div class="card feature-card">
+
+
+                <div class="feature-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <path
+                            d="M12 3l2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2L12 17.1 6.4 20l1.1-6.2L3 9.4l6.3-.9L12 3z"/>
+
+                    </svg>
+
+                </div>
+
+
+                <h3>
+                    AI Job Matching
+                </h3>
+
+
+                <p>
+
+                    Get personalized job recommendations
+                    based on your skills, education,
+                    experience and preferences.
+
+                </p>
+
+
+            </div>
+
+
+            <!-- SKILL ANALYSIS -->
+
+            <div class="card feature-card">
+
+
+                <div class="feature-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <path d="M4 19V5"/>
+
+                        <path d="M4 19h16"/>
+
+                        <path d="M7 15l4-4 3 2 5-6"/>
+
+                    </svg>
+
+                </div>
+
+
+                <h3>
+                    Skill Analysis
+                </h3>
+
+
+                <p>
+
+                    Identify your existing skills and
+                    understand which skills may be missing
+                    for your target roles.
+
+                </p>
+
+
+            </div>
+
+
+            <!-- JOB DISCOVERY -->
+
+            <div class="card feature-card">
+
+
+                <div class="feature-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <rect
+                            x="3"
+                            y="6"
+                            width="18"
+                            height="14"
+                            rx="2"/>
+
+                        <path
+                            d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+
+                    </svg>
+
+                </div>
+
+
+                <h3>
+                    Job Discovery
+                </h3>
+
+
+                <p>
+
+                    Browse available opportunities and
+                    find roles aligned with your career
+                    preferences.
+
+                </p>
+
+
+            </div>
+
+
+            <!-- TRACKING -->
+
+            <div class="card feature-card">
+
+
+                <div class="feature-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <path
+                            d="M6 3h12a2 2 0 0 1 2 2v16l-8-4-8 4V5a2 2 0 0 1 2-2z"/>
+
+                    </svg>
+
+                </div>
+
+
+                <h3>
+                    Save & Track
+                </h3>
+
+
+                <p>
+
+                    Save interesting jobs and track your
+                    applications from one centralized
+                    dashboard.
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ===================================================== -->
+
+    <section class="home-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                How CareerLens AI Works
+            </h2>
+
+            <p>
+                Build your profile, let AI analyze it,
+                and discover your best opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="steps-grid">
+
+
+            <!-- STEP 1 -->
+
+            <div class="card step-card">
+
+
+                <div class="step-number">
+                    01
+                </div>
+
+
+                <h3>
+                    Build Your Profile
+                </h3>
+
+
+                <p>
+
+                    Add your education, experience,
+                    location, preferred job type and
+                    technical skills.
+
+                </p>
+
+
+            </div>
+
+
+            <!-- STEP 2 -->
+
+            <div class="card step-card">
+
+
+                <div class="step-number">
+                    02
+                </div>
+
+
+                <h3>
+                    AI Analyzes Your Profile
+                </h3>
+
+
+                <p>
+
+                    CareerLens AI compares your profile
+                    with available jobs using the
+                    machine learning matching system.
+
+                </p>
+
+
+            </div>
+
+
+            <!-- STEP 3 -->
+
+            <div class="card step-card">
+
+
+                <div class="step-number">
+                    03
+                </div>
+
+
+                <h3>
+                    Discover Your Matches
+                </h3>
+
+
+                <p>
+
+                    Explore ranked opportunities with
+                    match scores, matched skills and
+                    missing skills.
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA
+    ===================================================== -->
+
+    <section class="home-cta">
+
+
+        <h2>
+            Ready to Find Your Next Opportunity?
+        </h2>
+
+
+        <p>
+
+            Create your career profile and let
+            CareerLens AI discover opportunities
+            that fit your skills and goals.
+
+        </p>
+
+
+        {% if user.is_authenticated %}
+
+
+            <a
+                href="{% url 'recommendations' %}"
+                class="btn">
+
+                Find My Matches
+
+            </a>
+
+
+        {% else %}
+
+
+            <a
+                href="{% url 'signup' %}"
+                class="btn">
+
+                Create Your Profile
+
+            </a>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</div>
+
+
+{% endblock %}

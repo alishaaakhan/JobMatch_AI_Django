@@ -1,0 +1,915 @@
+{% extends "base.html" %}
+
+{% block title %}Jobs - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   JOBS PAGE
+========================================================= */
+
+.jobs-page {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 10px 0 50px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.jobs-header {
+    margin-bottom: 28px;
+}
+
+.jobs-header h1 {
+    font-size: 36px;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+.jobs-header p {
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER AREA
+========================================================= */
+
+.job-search-panel {
+    margin-bottom: 30px;
+    padding: 22px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    backdrop-filter: blur(20px);
+}
+
+
+.job-search {
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr 1fr auto;
+
+    gap: 12px;
+
+    align-items: center;
+}
+
+
+.job-search input,
+.job-search select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border-radius: 11px;
+
+    border:
+        1px solid rgba(255,255,255,.09);
+
+    background:
+        rgba(15,23,42,.65);
+
+    color: #e2e8f0;
+
+    outline: none;
+
+    font-size: 13px;
+}
+
+
+.job-search input::placeholder {
+    color: #64748b;
+}
+
+
+.job-search input:focus,
+.job-search select:focus {
+
+    border-color:
+        rgba(124,140,255,.45);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(124,140,255,.07);
+}
+
+
+.job-search select option {
+    background: #111827;
+
+    color: #f8fafc;
+}
+
+
+.search-btn {
+    white-space: nowrap;
+
+    padding:
+        12px 18px;
+}
+
+
+/* =========================================================
+   RESULTS HEADER
+========================================================= */
+
+.results-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+
+    flex-wrap: wrap;
+}
+
+
+.results-header h2 {
+    font-size: 20px;
+}
+
+
+.results-count {
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   JOB GRID
+========================================================= */
+
+.jobs-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   JOB CARD
+========================================================= */
+
+.job-card {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 355px;
+
+    padding: 24px;
+
+    overflow: hidden;
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        background .25s ease;
+}
+
+
+.job-card:hover {
+
+    transform:
+        translateY(-6px);
+
+    border-color:
+        rgba(124,140,255,.25);
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+
+/* Top */
+
+.job-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+
+.job-title {
+
+    font-size: 18px;
+
+    line-height: 1.35;
+
+    margin-bottom: 7px;
+}
+
+
+.job-company {
+
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+
+/* Job badge */
+
+.job-badge {
+
+    flex-shrink: 0;
+
+    padding:
+        6px 9px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(124,140,255,.09);
+
+    border:
+        1px solid
+        rgba(124,140,255,.13);
+
+    color: #9ba7ff;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   JOB INFORMATION
+========================================================= */
+
+.job-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+}
+
+
+.job-info-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+.job-info-icon {
+
+    width: 25px;
+
+    height: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    color: #8290ff;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SKILLS
+========================================================= */
+
+.job-skills {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-bottom: 20px;
+}
+
+
+.skill-tag {
+
+    padding:
+        5px 9px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(124,140,255,.07);
+
+    border:
+        1px solid
+        rgba(124,140,255,.11);
+
+    color: #aab4ff;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   JOB FOOTER
+========================================================= */
+
+.job-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: auto;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid rgba(255,255,255,.06);
+}
+
+
+.salary {
+
+    color: #e2e8f0;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.salary-muted {
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+.view-job {
+
+    padding:
+        10px 15px;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+
+    grid-column: 1 / -1;
+
+    padding: 70px 25px;
+
+    text-align: center;
+
+    border-radius: 22px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+}
+
+
+.empty-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin:
+        0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(124,140,255,.09);
+
+    color: #8290ff;
+
+    font-size: 22px;
+}
+
+
+.empty-state h3 {
+
+    font-size: 19px;
+
+    margin-bottom: 8px;
+}
+
+
+.empty-state p {
+
+    max-width: 450px;
+
+    margin:
+        0 auto;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .jobs-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .job-search {
+
+        grid-template-columns:
+            2fr 1fr 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 750px) {
+
+    .jobs-header h1 {
+
+        font-size: 30px;
+
+    }
+
+    .jobs-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .job-search {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .search-btn {
+
+        width: 100%;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .jobs-page {
+
+        padding:
+            5px 0 40px;
+
+    }
+
+    .job-card {
+
+        padding: 20px;
+
+    }
+
+    .job-footer {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+    .view-job {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+}
+
+</style>
+
+
+<div class="jobs-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <div class="jobs-header">
+
+        <h1>
+            Explore Jobs
+        </h1>
+
+        <p>
+            Discover opportunities that match your
+            career interests and skills.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         SEARCH / FILTERS
+    ===================================================== -->
+
+    <div class="job-search-panel">
+
+        <form method="GET" class="job-search">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search jobs, companies or skills..."
+                value="{{ request.GET.search }}"
+            >
+
+
+            <select name="job_type">
+
+                <option value="">
+                    All Job Types
+                </option>
+
+                <option
+                    value="Full Time"
+                    {% if request.GET.job_type == "Full Time" %}
+                        selected
+                    {% endif %}
+                >
+                    Full Time
+                </option>
+
+                <option
+                    value="Internship"
+                    {% if request.GET.job_type == "Internship" %}
+                        selected
+                    {% endif %}
+                >
+                    Internship
+                </option>
+
+                <option
+                    value="Contract"
+                    {% if request.GET.job_type == "Contract" %}
+                        selected
+                    {% endif %}
+                >
+                    Contract
+                </option>
+
+            </select>
+
+
+            <select name="location">
+
+                <option value="">
+                    All Locations
+                </option>
+
+                {% for location in locations %}
+
+                    <option
+                        value="{{ location }}"
+                        {% if request.GET.location == location %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ location }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="category">
+
+                <option value="">
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+
+                    <option
+                        value="{{ category }}"
+                        {% if request.GET.category == category %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="btn search-btn"
+            >
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESULTS
+    ===================================================== -->
+
+    <div class="results-header">
+
+        <h2>
+            Available Opportunities
+        </h2>
+
+        <span class="results-count">
+
+            {% if jobs %}
+                {{ jobs|length }} jobs found
+            {% else %}
+                No jobs found
+            {% endif %}
+
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         JOB GRID
+    ===================================================== -->
+
+    <div class="jobs-grid">
+
+
+        {% for job in jobs %}
+
+
+            <div class="card job-card">
+
+
+                <!-- TOP -->
+
+                <div class="job-top">
+
+                    <div>
+
+                        <h3 class="job-title">
+                            {{ job.title }}
+                        </h3>
+
+                        <p class="job-company">
+                            {{ job.company }}
+                        </p>
+
+                    </div>
+
+
+                    <span class="job-badge">
+                        {{ job.job_type }}
+                    </span>
+
+                </div>
+
+
+                <!-- INFORMATION -->
+
+                <div class="job-info">
+
+
+                    <div class="job-info-row">
+
+                        <span class="job-info-icon">
+                            ◉
+                        </span>
+
+                        <span>
+                            {{ job.location }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="job-info-row">
+
+                        <span class="job-info-icon">
+                            ◈
+                        </span>
+
+                        <span>
+                            {{ job.category }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="job-info-row">
+
+                        <span class="job-info-icon">
+                            ▣
+                        </span>
+
+                        <span>
+
+                            {{ job.experience_years }}
+
+                            {% if job.experience_years == 1 %}
+                                year
+                            {% else %}
+                                years
+                            {% endif %}
+
+                            experience
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- SKILLS -->
+
+                {% if job.skills.all %}
+
+                    <div class="job-skills">
+
+                        {% for skill in job.skills.all|slice:":5" %}
+
+                            <span class="skill-tag">
+                                {{ skill.name }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- FOOTER -->
+
+                <div class="job-footer">
+
+
+                    <div>
+
+                        {% if job.salary_inr %}
+
+                            <div class="salary">
+                                ₹{{ job.salary_inr }}
+                            </div>
+
+                        {% else %}
+
+                            <div class="salary-muted">
+                                Salary not disclosed
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'job_detail' job.id %}"
+                        class="btn view-job"
+                    >
+                        View Job
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        {% empty %}
+
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+                    ◈
+                </div>
+
+
+                <h3>
+                    No Jobs Available
+                </h3>
+
+
+                <p>
+
+                    No matching jobs were found.
+                    Jobs will appear here after your
+                    job dataset has been imported.
+
+                </p>
+
+
+            </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

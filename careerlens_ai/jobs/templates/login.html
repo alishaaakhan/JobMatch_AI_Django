@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+
+{% block title %}Login - CareerLens AI{% endblock %}
+
+{% block content %}
+
+<style>
+
+.login-page {
+    min-height: calc(100vh - 100px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 480px;
+
+    padding: 40px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    backdrop-filter: blur(25px);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.30);
+}
+
+
+/* Header */
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background:
+        rgba(124,140,255,.12);
+
+    border:
+        1px solid rgba(124,140,255,.20);
+
+    color: #8290ff;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    box-shadow:
+        0 0 30px rgba(124,140,255,.10);
+}
+
+.login-header h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+
+/* Form */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form label {
+    margin-bottom: 8px;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.login-form input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin-bottom: 20px;
+
+    padding: 13px 15px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    background:
+        rgba(15,23,42,.55);
+
+    color: #f8fafc;
+
+    outline: none;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+}
+
+.login-form input:focus {
+    border-color:
+        rgba(124,140,255,.55);
+
+    background:
+        rgba(15,23,42,.75);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(124,140,255,.08);
+}
+
+.login-form input::placeholder {
+    color: #64748b;
+}
+
+
+/* Login button */
+
+.login-button {
+    width: 100%;
+
+    margin-top: 5px;
+
+    padding: 14px;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* Bottom */
+
+.login-footer {
+    text-align: center;
+
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.login-footer a {
+    color: #8290ff;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* Error message */
+
+.login-error {
+    margin-bottom: 20px;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(239,68,68,.08);
+
+    border:
+        1px solid rgba(239,68,68,.18);
+
+    color: #fca5a5;
+
+    font-size: 13px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+
+    .login-card {
+        padding: 30px 22px;
+    }
+
+    .login-header h2 {
+        font-size: 26px;
+    }
+
+}
+
+</style>
+
+
+<div class="login-page">
+
+    <div class="login-card">
+
+
+        <!-- Header -->
+
+        <div class="login-header">
+
+            <div class="login-logo">
+                AI
+            </div>
+
+            <h2>
+                Welcome Back
+            </h2>
+
+            <p>
+                Login to view your personalized job matches.
+            </p>
+
+        </div>
+
+
+        <!-- Login Form -->
+
+        <form
+            method="POST"
+            class="login-form"
+        >
+
+            {% csrf_token %}
+
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="login-error">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                autocomplete="username"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="btn login-button"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <!-- Signup -->
+
+        <div class="login-footer">
+
+            Don't have an account?
+
+            <a href="{% url 'signup' %}">
+                Create Account
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
