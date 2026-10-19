@@ -939,6 +939,83 @@ CareerLens AI - AI-Powered Career Matching
 
 }
 
+/* MEET THE DEVELOPER */
+.developer-section {
+    margin-top: 75px;
+    padding: 45px 25px;
+    text-align: center;
+    border-radius: 26px;
+    background: linear-gradient(
+        135deg,
+        rgba(102, 117, 245, 0.13),
+        rgba(255, 255, 255, 0.035)
+    );
+    border: 1px solid rgba(124, 140, 255, 0.18);
+    backdrop-filter: blur(22px);
+}
+
+.developer-photo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, #8290ff, #c4b5fd);
+    box-shadow: 0 0 35px rgba(102, 117, 245, 0.25);
+    overflow: hidden;
+}
+
+.developer-photo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 3px solid #111827;
+}
+
+.developer-eyebrow {
+    color: #aab4ff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.developer-section h2 {
+    font-size: clamp(25px, 4vw, 34px);
+    margin-bottom: 8px;
+}
+
+.developer-role {
+    color: #aab4ff;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.developer-description {
+    max-width: 570px;
+    margin: 0 auto;
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+@media (max-width: 650px) {
+    .developer-section {
+        padding: 35px 18px;
+        margin-top: 50px;
+    }
+
+    .developer-photo {
+        width: 125px;
+        height: 125px;
+    }
+}
+
 </style>
 
 
@@ -1459,6 +1536,32 @@ CareerLens AI - AI-Powered Career Matching
 
 
     </section>
+   
+<!-- MEET THE DEVELOPER -->
+<section class="developer-section">
+    <div class="developer-photo">
+        <img
+            src="{% static 'images/alisha-khan.jpg' %}"
+            alt="Alisha Khan, Developer of CareerLens AI"
+            loading="lazy"
+        >
+    </div>
+
+    <p class="developer-eyebrow">Meet the Developer</p>
+
+    <h2>Alisha Khan</h2>
+
+    <p class="developer-role">
+        Developer of CareerLens AI
+    </p>
+
+    <p class="developer-description">
+        Passionate about building intelligent and user-friendly
+        web applications. CareerLens AI brings AI-powered career
+        matching and job discovery together to help users explore
+        opportunities that fit their skills and goals.
+    </p>
+</section>
 
 
 </div>
