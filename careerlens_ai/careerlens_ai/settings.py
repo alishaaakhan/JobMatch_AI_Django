@@ -25,9 +25,15 @@ SECRET_KEY = "django-insecure-n(n2*3uxdiwpco#z#u*5__2*mdu)xq0m+m&aaculf#ze2#qt_0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "jobmatch-ai-django.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://jobmatch-ai-django.onrender.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
